@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alura.comex.dto.ProdutoRequest;
 import br.com.alura.comex.dto.ProdutoResponse;
+import br.com.alura.comex.exception.ResourceNotFoundException;
 import br.com.alura.comex.model.Categoria;
 import br.com.alura.comex.model.Produto;
 import br.com.alura.comex.repository.CategoriaRepository;
@@ -28,8 +29,8 @@ public class ProdutoService {
 
     @Transactional
     public ProdutoResponse cadastrar(ProdutoRequest request) {
-        Categoria categoria = categoriaRepository.findById(request.idCategoria())
-                .orElseThrow(() -> new RuntimeException("ID da Categoria inválido: " + request.idCategoria()));
+         Categoria categoria = categoriaRepository.findById(request.idCategoria())
+            .orElseThrow(() -> new ResourceNotFoundException("Categoria com ID " + request.idCategoria() + " não encontrada!"));
         Produto novoProduto = new Produto();
 
         novoProduto.setNome(request.nome());
