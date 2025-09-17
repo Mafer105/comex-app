@@ -1,31 +1,30 @@
 package br.com.alura.comex.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "categorias")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = "produtos") 
+@EqualsAndHashCode(of = "id")
 public class Categoria {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String nome;
 
-    public Long getId() {
-        return id;
-    }
+    @Enumerated(EnumType.STRING) 
+    private StatusCategoria status;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    @Override
-    public String toString() {
-        return "Categoria{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
-    }
+    @ManyToMany(mappedBy = "categorias")
+    private List<Produto> produtos = new ArrayList<>();
 }
